@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>never news</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns"
+        crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Gaegu" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <style>
+        .container img {
+            width: 300px;
+            float: left;
+            margin-left: 80px;
+        }
+
+        .jumbotron {
+            background-color: white;
+        }
+
+        .input-group {
+            float: left;
+            margin-top: 27px;
+        }
+
+        button {
+            background-color: rgb(3, 207, 93);
+        }
+
+        i {
+            color: white;
+        }
+
+        table th {
+            color: rgb(3, 207, 93);
+            font-family: 'Gaegu', cursive;
+            font-size: 25px;
+        }
+
+        td {
+            font-family: 'Nanum Gothic', sans-serif;
+        }
+
+        a {
+            text-decoration: none;
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <a href="naver.html"><img src="img/logo.PNG" alt=""></a>
+            <form>
+                <div class="input-group col-sm-6">
+                    <input name="search" id="search" type="text" class="form-control border-success" placeholder="news">
+                    <div class="input-group-append">
+                        <button class="btn border-success" type="button"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <table class="table text-center">
+            <thead>
+                <tr>
+                    <th style="width: 150px;">저자</th>
+                    <th style="width: 200px;">카테고리</th>
+                    <th>제목</th>
+                    <th style="width: 300px;">날짜</th>
+                </tr>
+            </thead>
+            <tbody class="tb"></tbody>
+        </table><a href=""></a>
+    </div>
+</body>
+<script>
+    var input;
+    $("#search").on("change", function () {
+        input = $(this).val();
+        getreturn(input);
+    });
+
+    function getreturn(input) {
+        var query = input;
+        var rss = "naver.php?sch=";
+        var search = rss + encodeURIComponent(query);
+        $.getJSON(search, function (res) {
+            getsys(res);
+        });
+    }
+    function getsys(res){
+        var arr = res ? res : "";
+        for (var i = 0; i < arr.length; i++) {
+            var author = arr[i].author[0];
+            var category = arr[i].category[0];
+            var link = arr[i].link[0];
+            var pubDate = arr[i].pubDate[0];
+            var title = arr[i].title[0];
+            
+            var tr = "<tr>";
+                tr += "<td>" + author + "</td>";
+                tr += "<td>" + category + "</td>";
+                tr += "<td><a href=" + link  +">"+ title + "</a></td>";
+                tr += "<td>" + pubDate + "</td>";
+                tr += "</tr>";
+                $('.tb').append(tr);
+        }
+    }
+</script>
+
+</html>
